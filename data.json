@@ -1,8 +1,6 @@
 [
     {
-<<<<<<< HEAD
-        "name": "Master Item",
-=======
-
+        "name": "Updated Item",
+        "description": "Updated description"
     }
 ]
