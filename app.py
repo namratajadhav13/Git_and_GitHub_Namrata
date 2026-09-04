@@ -10,14 +10,12 @@ app = Flask(__name__)
 
 # MongoDB connection
 MONGO_URI = os.getenv("MONGO_URI")
-
 client = MongoClient(MONGO_URI)
 
 db = client["flashdb"]
 collection = db["submissions"]
 
 
-# JSON API
 @app.route("/api/data", methods=["GET"])
 def get_data():
     with open("data.json", "r") as file:
@@ -26,28 +24,28 @@ def get_data():
     return jsonify(data)
 
 
-# Home page
 @app.route("/")
 def home():
     return render_template("index.html")
 
 
-# Form submission
-@app.route("/submit", methods=["POST"])
-def submit():
-    name = request.form["name"]
-    email = request.form["email"]
-    message = request.form["message"]
+@app.route("/submittodoitem", methods=["POST"])
+def submittodoitem():
+    item_name = request.form["item_name"]
+    item_description = request.form["item_description"]
 
-    data = {
-        "name": name,
-        "email": email,
-        "message": message
+    todo_item = {
+        "ItemName": item_name,
+        "ItemDescription": item_description
     }
 
-    collection.insert_one(data)
+    collection.insert_one(todo_item)
 
-    return render_template("success.html")
+    return jsonify({
+        "message": "To-Do item submitted successfully",
+        "ItemName": item_name,
+        "ItemDescription": item_description
+    })
 
 
 if __name__ == "__main__":
